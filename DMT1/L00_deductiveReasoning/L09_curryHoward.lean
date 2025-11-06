@@ -266,6 +266,9 @@ inductive Likes : Person → Person → Prop
 | xlm : Likes Xing Mary
 | tlm : Likes Tom Mary
 
+inductive IsNice : Person -> Prop
+| maryIsNice : IsNice Mary
+
 open Likes
 -- Everyone likes Mary
 
@@ -282,3 +285,25 @@ example : ∀ (p : Person), Likes p Mary :=
 
 
 -- example : ∃ (p : Person), likes p Mary := _
+
+example: ∀ (p: Person), IsNice p -> (∀ q, Likes q p) := by
+  intro p hp q
+  exact (
+    match p with
+    | Mary => match q with
+      | Mary => mlm
+      | Tom => tlm
+      | Xing => xlm
+    | Tom => nomatch hp
+    | Xing => nomatch hp
+  )
+
+inductive IsFunny: Person -> Prop
+| mf : IsFunny Mary
+
+example : (∃ (p: Person), IsNice p ∧ IsFunny p) -> (∃ (p: Person), IsNice p) := by
+  intro h
+  apply Exists.elim h
+  intro p hp
+  -- let ⟨ p, hp ⟩ := h
+  exact ⟨ p, hp.left ⟩
