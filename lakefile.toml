@@ -5,6 +5,9 @@ defaultTargets = ["DMT1"]
 [[lean_lib]]
 name = "DMT1"
 
+[[lean_lib]]
+name = "Workspace"
+
 # [[lean_exe]]
 # name = "dmt1"
 # root = "Main"
